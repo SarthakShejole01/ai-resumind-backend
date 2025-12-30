@@ -7,10 +7,7 @@ export const scoreResume = async (req, res) => {
       return res.status(400).json({ error: "No resume file provided" });
     }
 
-    const extractedText = await extractTextFromFile(
-      req.file.path,
-      req.file.mimetype
-    );
+   const extractedText = await extractTextFromFile(req.file);
 
     if (!extractedText || extractedText.trim().length === 0) {
       return res.status(422).json({
