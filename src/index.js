@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import resumeRoutes from "./routes/resume.routes.js";
+import jdRoutes from "./routes/jd.routes.js";
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use("/api/resume", resumeRoutes);
+app.use("/api/jd", jdRoutes);
 
 // Health Check Route
 app.get("/health", (req, res) => {
