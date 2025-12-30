@@ -1,29 +1,28 @@
-import fs from "fs-extra";
 import mammoth from "mammoth";
 import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
-const pdf = require("pdf-parse"); // ✅ pdf IS a function in v1.1.1
+const pdf = require("pdf-parse");
 
-export const extractTextFromFile = async (filePath, mimeType) => {
-  try {
-    if (mimeType === "application/pdf") {
-      const dataBuffer = await fs.readFile(filePath);
-      const pdfData = await pdf(dataBuffer);
-      return pdfData.text;
-    }
-
-    if (
-      mimeType ===
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    ) {
-      const result = await mammoth.extractRawText({ path: filePath });
-      return result.value;
-    }
-
-    throw new Error("Unsupported file type for extraction");
-  } catch (error) {
-    console.error("Text extraction failed:", error);
-    throw error;
+export const extractTextFromFile = async (file) => {
+  if (!file || !file.mimetype) {
+    throw new Error("Invalid file object");
   }
+
+  if (file.mimetype === "application/pdf") {
+    const data = await pdf(file.buffer);
+    return data.text;
+  }
+
+  if (
+    file.mimetype ===
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  ) {
+    const result = await mammoth.extractRawText({
+      buffer: file.buffer,
+    });
+    return result.value;
+  }
+
+  throw new Error(`Unsupported file type: ${file.mimetype}`);
 };

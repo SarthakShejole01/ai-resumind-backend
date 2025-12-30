@@ -5,7 +5,7 @@ export const matchResumeWithJD = async (req, res) => {
   try {
     const { jobDescription } = req.body;
 
-    if (!req.file) {
+    if (!req.files || !req.files.resume) {
       return res.status(400).json({ error: "Resume file is required" });
     }
 
@@ -15,7 +15,9 @@ export const matchResumeWithJD = async (req, res) => {
       });
     }
 
-    const resumeText = await extractTextFromFile(req.file);
+    const resumeFile = req.files.resume[0];
+
+    const resumeText = await extractTextFromFile(resumeFile);
 
     const result = mockJDMatch(resumeText, jobDescription);
 

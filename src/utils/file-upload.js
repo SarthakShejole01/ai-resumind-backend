@@ -1,22 +1,11 @@
 import multer from "multer";
-import path from "path";
 
-// Storage config (local for now)
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
+const storage = multer.memoryStorage();
 
-// File type validation
 const fileFilter = (req, file, cb) => {
   const allowedTypes = [
     "application/pdf",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   ];
 
   if (allowedTypes.includes(file.mimetype)) {
@@ -30,6 +19,6 @@ export const upload = multer({
   storage,
   fileFilter,
   limits: {
-    fileSize: 5 * 1024 * 1024 // 5 MB
-  }
+    fileSize: 5 * 1024 * 1024, // 5MB
+  },
 });

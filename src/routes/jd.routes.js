@@ -6,7 +6,9 @@ const router = express.Router();
 
 router.post(
   "/match",
-  upload.single("resume"),
+  upload.fields([
+    { name: "resume", maxCount: 1 }
+  ]),
   matchResumeWithJD
 );
 

@@ -1,6 +1,5 @@
 import express from "express";
 import { upload } from "../utils/file-upload.js";
-// import { extractResumeText } from "../controllers/resume.controller.js";
 import { scoreResume } from "../controllers/resume.controller.js";
 
 
@@ -22,12 +21,6 @@ router.post(
     });
   }
 );
-
-// router.post(
-//   "/extract",
-//   upload.single("resume"),
-//   extractResumeText
-// );
 
 router.post(
   "/score",
